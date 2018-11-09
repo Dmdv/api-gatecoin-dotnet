@@ -160,13 +160,30 @@ namespace GatecoinServiceInterface.Client
             return _client.Get<TResponse>(relativeOrAbsoluteUrl);
         }
 
-        public void GetAsync<TResponse>(IReturn<TResponse> request, Action<TResponse> onSuccess,
+        public void GetAsync<TResponse>(IReturn<TResponse> request)
+        {
+            _client.GetAsync<TResponse>(request);
+        }
+
+        [Obsolete("Will be removed. Use GetAsync(request) function")]
+        public void GetAsync<TResponse>(
+            IReturn<TResponse> request, 
+            Action<TResponse> onSuccess,
             Action<TResponse, Exception> onError)
         {
             _client.GetAsync<TResponse>(request/*, onSuccess, onError*/);
         }
 
-        public void GetAsync<TResponse>(string relativeOrAbsoluteUrl, Action<TResponse> onSuccess,
+        public void GetAsync<TResponse>(
+            string relativeOrAbsoluteUrl)
+        {
+            _client.GetAsync<TResponse>(relativeOrAbsoluteUrl);
+        }
+
+        [Obsolete("Will be removed. Use GetAsync(relativeOrAbsoluteUrl) function")]
+        public void GetAsync<TResponse>(
+            string relativeOrAbsoluteUrl, 
+            Action<TResponse> onSuccess,
             Action<TResponse, Exception> onError)
         {
             _client.GetAsync<TResponse>(relativeOrAbsoluteUrl/*, onSuccess, onError*/);
@@ -191,17 +208,35 @@ namespace GatecoinServiceInterface.Client
             return _client.Post<TResponse>(relativeOrAbsoluteUrl, request);
         }
 
-        public void PostAsync<TResponse>(IReturn<TResponse> request, Action<TResponse> onSuccess,
+        [Obsolete("Will be removed. Use PostAsync(request) function")]
+        public void PostAsync<TResponse>(
+            IReturn<TResponse> request,
+            Action<TResponse> onSuccess,
             Action<TResponse, Exception> onError)
         {
             _client.PostAsync<TResponse>(request/*, onSuccess, onError*/);
         }
 
-        public void PostAsync<TResponse>(string relativeOrAbsoluteUrl, object request, Action<TResponse> onSuccess,
+        [Obsolete("Will be removed. Use PostAsync(relativeOrAbsoluteUrl) function")]
+        public void PostAsync<TResponse>(
+            string relativeOrAbsoluteUrl,
+            object request,
+            Action<TResponse> onSuccess,
             Action<TResponse, Exception> onError)
         {
             _client.PostAsync<TResponse>(relativeOrAbsoluteUrl, request/*, onSuccess, onError*/);
         }
+
+        public void PostAsync<TResponse>(IReturn<TResponse> request)
+        {
+            _client.PostAsync<TResponse>(request);
+        }
+
+        public void PostAsync<TResponse>(string relativeOrAbsoluteUrl, object request)
+        {
+            _client.PostAsync<TResponse>(relativeOrAbsoluteUrl, request);
+        }
+
 
         #endregion
 
@@ -222,18 +257,34 @@ namespace GatecoinServiceInterface.Client
             return _client.Delete<TResponse>(relativeOrAbsoluteUrl);
         }
 
-        public void DeleteAsync<TResponse>(IReturn<TResponse> request, Action<TResponse> onSuccess,
+        [Obsolete("Will be removed. Use DeleteAsync(request) function")]
+        public void DeleteAsync<TResponse>(
+            IReturn<TResponse> request, 
+            Action<TResponse> onSuccess,
             Action<TResponse, Exception> onError)
         {
             _client.DeleteAsync<TResponse>(request/*, onSuccess, onError*/);
         }
 
-        public void DeleteAsync<TResponse>(string relativeOrAbsoluteUrl, Action<TResponse> onSuccess,
+        [Obsolete("Will be removed. Use DeleteAsync(relativeOrAbsoluteUrl) function")]
+        public void DeleteAsync<TResponse>(
+            string relativeOrAbsoluteUrl, 
+            Action<TResponse> onSuccess,
             Action<TResponse, Exception> onError)
         {
             _client.DeleteAsync<TResponse>(relativeOrAbsoluteUrl/*, onSuccess, onError*/);
         }
 
+        public void DeleteAsync<TResponse>(IReturn<TResponse> request)
+        {
+            _client.DeleteAsync<TResponse>(request);
+        }
+
+        public void DeleteAsync<TResponse>(string relativeOrAbsoluteUrl)
+        {
+            _client.DeleteAsync<TResponse>(relativeOrAbsoluteUrl);
+        }
+        
         #endregion
 
         #region Put
@@ -253,16 +304,35 @@ namespace GatecoinServiceInterface.Client
             return _client.Put<TResponse>(relativeOrAbsoluteUrl, request);
         }
 
-        public void PutAsync<TResponse>(IReturn<TResponse> request, Action<TResponse> onSuccess,
+        [Obsolete("Will be removed. Use PutAsync(request) function")]
+        public void PutAsync<TResponse>(
+            IReturn<TResponse> request, 
+            Action<TResponse> onSuccess,
             Action<TResponse, Exception> onError)
         {
             _client.PutAsync<TResponse>(request/*, onSuccess, onError*/);
         }
 
-        public void PutAsync<TResponse>(string relativeOrAbsoluteUrl, object request, Action<TResponse> onSuccess,
+        [Obsolete("Will be removed. Use PutAsync(relativeOrAbsoluteUrl) function")]
+        public void PutAsync<TResponse>(
+            string relativeOrAbsoluteUrl, 
+            object request, 
+            Action<TResponse> onSuccess,
             Action<TResponse, Exception> onError)
         {
-            _client.PostAsync<TResponse>(relativeOrAbsoluteUrl/*, request, onSuccess, onError*/);
+            _client.PostAsync<TResponse>(relativeOrAbsoluteUrl, request);
+        }
+
+        public void PutAsync<TResponse>(IReturn<TResponse> request)
+        {
+            _client.PutAsync<TResponse>(request);
+        }
+
+        public void PutAsync<TResponse>(
+            string relativeOrAbsoluteUrl,
+            object request)
+        {
+            _client.PostAsync<TResponse>(relativeOrAbsoluteUrl, request);
         }
 
         #endregion
