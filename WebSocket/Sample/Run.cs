@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using GatecoinServiceInterface.Client;
 using GatecoinServiceInterface.WebSocket.Client;
 using GatecoinServiceInterface.WebSocket.Model;
 using Newtonsoft.Json;
@@ -8,9 +9,11 @@ namespace GatecoinServiceInterface.WebSocket.Sample
 {
     public class Run
     {
-        public static async Task Start()
+        private const string Root = "https://streaming.gtcprojects.com";
+
+        public static async Task StartPublic()
         {
-            var builder = new StreamingClientBuilder("put url here");
+            var builder = new StreamingClientBuilder(Root);
 
             using (var client = await builder.BuildTraderClient().Start())
             {
@@ -27,18 +30,20 @@ namespace GatecoinServiceInterface.WebSocket.Sample
             }
         }
 
-        public static async Task StartPrivate()
+        public static async Task StartTradePrivate(string publicKey, string privateKey)
         {
-            var builder = new StreamingClientBuilder("put url here");
+            var urlHub = $"{Root}/v1/hub/trade";
+            var timeStamp = DateTime.UtcNow;
+
+            var builder = new StreamingClientBuilder(Root);
 
             builder
                 .WithAccessToken(
                     token =>
                     {
-                        // example settings
-                        token.DateTime = new DateTime(2018, 11, 24, 9, 20, 30, DateTimeKind.Utc);
-                        token.SignedMessage = "gnrtyDuKQBbG2970f4MwMbqRJ/QOF+rSHAOhm09OTsd=";
-                        token.PublicKey = "7dGMg2W55fVez4GGCQgyg4JBOiYZqOeL";
+                        token.DateTime = timeStamp;
+                        token.SignedMessage = ServiceSignature.CreateToken($"{urlHub}{timeStamp.ToUnixTimeString()}", privateKey);
+                        token.PublicKey = publicKey;
                     });
 
             using (var client = await builder.BuildTraderClient().Start())
@@ -54,6 +59,38 @@ namespace GatecoinServiceInterface.WebSocket.Sample
                 subscription.Dispose();
                 subscriptionBtcUsd.Dispose();
             }
+        }
+
+        public static async Task StartTradePrivate()
+        {
+            const string publicKey = "publicKey";
+            const string privateKey = "privateKey";
+
+            await StartTradePrivate(publicKey, privateKey);
+        }
+
+        private class TestServiceClient : ServiceClient
+        {
+            public string PublicKey => ApiPublicKey;
+            public string PrivateKey => ApiPrivateKey;
+        }
+
+        public static async Task StartSubscribeAndStartPrivate()
+        {
+            const string apiUsername = "your_login";
+            const string apiPassword = "your_pass";
+            const string apiBypassCaptchaCode = "your_captcha";
+
+            var client = new TestServiceClient();
+            var res = client.Login(apiUsername, apiPassword, apiBypassCaptchaCode);
+
+            if (!res)
+            {
+                Console.WriteLine("Failed to login in StartSubscribeAndStartPrivate");
+                return;
+            }
+
+            await StartTradePrivate(client.PublicKey, client.PrivateKey);
         }
     }
 }

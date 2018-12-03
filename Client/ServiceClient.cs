@@ -19,7 +19,7 @@ namespace GatecoinServiceInterface.Client
 
         private readonly Action<HttpWebRequest> _requestFilter;
 
-        public ServiceClient() : this("https://api.gatecoin.com/")
+        public ServiceClient() : this("https://api.gtcprojects.com")
         {
         }
 
